@@ -8,4 +8,4 @@ a small ,quick php framework
     易于集成，可以方便加入第三方库
     模块管理 ， 可以增加模块，增强功能
     基於 Zend Frameworkd v1 ,可以重用 zend 功能
-   模仿Yii, 具备Yii 的框架功能
+    模仿Yii, 具备Yii 的框架功能
