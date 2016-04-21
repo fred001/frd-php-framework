@@ -1,0 +1,18 @@
+<table class="table">
+   <thead>
+      <tr>
+         <th>Title</th>
+         <th>Content</th>
+      </tr>
+   </thead>
+   <tfoot>
+   </tfoot>
+   <tbody>
+      <?php foreach($this->rows as $row): ?>
+      <tr>
+         <td><?php echo $row['title']; ?></td>
+         <td><?php echo $row['content']; ?></td>
+      </tr>
+      <?php endforeach; ?>
+   </tbody>
+</table>

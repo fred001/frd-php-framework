@@ -198,6 +198,8 @@ class Frd_Module
   function runController($controller)
   {
     $_module=$this;
+    $_controller=$controller;
+
     $path=$this->getPath("controller/$controller.php");
     if(file_exists($path) == false)
     {

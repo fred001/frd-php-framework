@@ -373,11 +373,11 @@ function file_getName($filename)
 }
 
 // get dir's file names
-function file_getDirFiles($dir)
+function file_get_dir_files($dir)
 {
   $dir=rtrim($dir,"/");
 
-  if (self::isDir($dir)) 
+  if (is_dir($dir)) 
   {
     if ($dh = opendir($dir)) 
     {
@@ -386,7 +386,7 @@ function file_getDirFiles($dir)
       {
         if ($file!="." && $file!="..") 
         {
-          $files[]=$dir.'/'.$file;
+          $files[]=realpath($dir.'/'.$file);
         }
       }
 

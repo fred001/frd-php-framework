@@ -338,6 +338,7 @@ function load_config_file($path)
 
  * @param integer|string $postition can be position or key 
  * @param array  $insert_array 
+ *
  */
 function array_insert (&$array, $position, $insert_array) 
 {
@@ -636,4 +637,53 @@ function getModule($name)
 {
   return app()->getModule($name);
   //return Frd::getModule($folder,$class_name);
+}
+
+function http_post($url,$post_array)
+{
+  if(empty($url)){ return false;}
+
+  $fields_string =http_build_query($post_array);
+
+  //open connection
+  $ch = curl_init();
+
+  //set the url, number of POST vars, POST data
+  curl_setopt($ch,CURLOPT_URL,$url);
+  curl_setopt($ch, CURLOPT_POST, true);
+  curl_setopt($ch,CURLOPT_POSTFIELDS,$fields_string);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+  //DANGEROUS
+  //if(strpos($url,"https://iamlosing.me") === 0)
+  {
+     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 信任任何证书  
+  }
+
+
+  //curl_setopt($ch, CURLOPT_HEADER, 0);
+  //curl_setopt($ch, CURLOPT_VERBOSE, 0);
+  //curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible;)");
+
+  //execute post
+  $result = curl_exec($ch);
+  if($result == false)
+  {
+     $result=curl_error($ch);
+  }
+
+  //close connection
+  curl_close($ch);
+
+  return $result;
+}
+
+function http_get($url,$params=array())
+{
+   if(count($params) > 0)
+   {
+      $url.="?".http_build_query($params);
+   }
+
+   return file_get_contents($url);
 }

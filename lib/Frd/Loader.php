@@ -72,41 +72,41 @@
             }
          }
 
-         //if($loaded === false && isdefined(Frd))
-         if(false)
+         /*
+         if($loaded === false )
+         //&& defined('Frd'))
          {
-           /*
-           //check module folder
-             $module_folders=array(Frd::$module_path);
-             if(!is_array($module_folders)) $module_folders=array();
+            //check module folder
+            $module_folders=array(Frd::$module_path);
+            if(!is_array($module_folders)) $module_folders=array();
 
 
-             $path=str_replace("_","/",$classname);
-             //first character to lower, 
-             //because module folder not ucfirst
-             $path=lcfirst($path);
-             $filename=($path.".php");
+            $path=str_replace("_","/",$classname);
+            //first character to lower, 
+            //because module folder not ucfirst
+            $path=lcfirst($path);
+            $filename=($path.".php");
 
 
-             foreach($module_folders as $module_folder)
-             {
+            foreach($module_folders as $module_folder)
+            {
                $path=rtrim($module_folder,"/")."/".$filename;
                if(file_exists($path))
                {
-                 $loaded=true;
-                 require_once($path);
-                 break;
+                  $loaded=true;
+                  require_once($path);
+                  break;
                }
-             }
+            }
 
-             if($loaded == false)
-             {
+            if($loaded == false)
+            {
                $path=str_replace("_","/",$classname);
                $paths=(explode("/",$path));
                if(count($paths) > 2)
                {
-                 $paths[0]=lcfirst($paths[0]);
-                 $paths[1]=lcfirst($paths[1]);
+                  $paths[0]=lcfirst($paths[0]);
+                  $paths[1]=lcfirst($paths[1]);
                }
 
                $path=implode("/",$paths);
@@ -116,17 +116,17 @@
                //try 2 leve deep module folder  , like   xxx/xxx/main.php
                foreach($module_folders as $module_folder)
                {
-                 $path=rtrim($module_folder,"/")."/".$filename;
-                 if(file_exists($path))
-                 {
-                   $loaded=true;
-                   require_once($path);
-                   break;
-                 }
+                  $path=rtrim($module_folder,"/")."/".$filename;
+                  if(file_exists($path))
+                  {
+                     $loaded=true;
+                     require_once($path);
+                     break;
+                  }
                }
-             }
-            */
+            }
          }
+         */
 
          if($loaded == false)
          {
