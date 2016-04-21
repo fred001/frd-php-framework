@@ -18,7 +18,7 @@ if(file_exists(ROOT_PATH."/local/setting.php"))
 }
 else
 {
-  $setting=$setting_default;
+  $setting=$default_setting;
 }
 
 
@@ -30,6 +30,17 @@ try{
 }
 catch(Exception $e)
 {
-  error_log($e);
-  throw $e;
+  if($e->getMessage() == "REWRITE URL FAILED")
+  {
+     app()->run("/404");
+
+    //require_once(ROOT_PATH."/error/404.php");
+  }
+  else
+  {
+     throw $e;
+    error_log($e);
+    app()->run("/error");
+    //require_once(ROOT_PATH."/error/error.php");
+  }
 }

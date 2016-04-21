@@ -6,49 +6,6 @@ function url($path,$params=array())
 }
 
 
-function login_info($field)
-{
-  return $_SESSION['login']['user'][$field];
-}
-
-function is_login()
-{
-  if(isset($_SESSION['login']))
-  {
-    if(isset($_SESSION['login']['user']))
-    {
-      if(isset($_SESSION['login']['user']['id'])
-       && isset($_SESSION['login']['user']['username'])
-       && isset($_SESSION['login']['user']['password'])
-     )
-      {
-        return true;
-      }
-    }
-  }
-
-
-  return false;
-}
-
-function login($user)
-{
-  $_SESSION['login']=array();
-  $_SESSION['login']['user']=array(
-    'id'=>$user->id,
-    'username'=>$user->username,
-    'password'=>$user->password,
-  );
-
-}
-
-function logout()
-{
-  $_SESSION['login']=array();
-}
-
-
-
 function pagination($total,$page_count,$page_current,$page_baseurl)
 {
   $page_total=ceil($total/$page_count);
@@ -108,33 +65,6 @@ function pagination($total,$page_count,$page_current,$page_baseurl)
   return $html;
 }
 
-
-function render_content($children)
-{
-  echo '<ol class="tree">';
-  foreach($children as $section)
-  {
-    if($section['blog_id'] != false)
-    {
-      echo "<li onclick='book_load_content(".$section['blog_id'].")' data-blog-id='".$section['blog_id']."'><label>".$section['title']."</label>";
-    }
-    else
-    {
-      echo "<li><label>".$section['title']."</label>";
-    }
-
-    if(isset($section['children']) && is_array($section['children']) && count($section['children']) > 0)
-    {
-      render_content($section['children']);
-
-
-    }
-
-    echo '</li>';
-  }
-
-  echo '</ol>';
-}
 
 function array_get($array,$key,$default=null)
 {
