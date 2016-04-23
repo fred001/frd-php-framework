@@ -1,13 +1,4 @@
 <?php
-/*** core functions: must exists ***/
-function app()
-{
-  return Frd::$app;
-}
-
-
-
-
 
 /****** not core : can delete ,will not cause framework not work ******/
 /**
@@ -35,77 +26,6 @@ function explodeString($string,$split_char=",")
 }
 
 
-function getvalue($arr,$key,$default=false)
-{
-  if(isset($arr[$key]))
-  {
-    return  $arr[$key];
-  }
-  else
-  {
-    return $default; 
-  }
-}
-
-function hasvalue($arr,$key)
-{
-  if(isset($arr[$key]))
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-}
-
-/*
- * get today's datetime
- * @format string  date format
- */
-function today($format="Y-m-d")
-{
-  return date($format);
-}
-
-function now($format="Y-m-d H:i:s")
-{
-  return date($format);
-}
-
-/**
- * does it use https or http 
- */
-function is_https()
-{
-  if(isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on')
-    return true;
-  else
-    return false;
-}
-
-/**
- * get absolute path by current file's path and relative path
- * @param string current_file_path ,this should alwyas be __FILE__ !!!!!
- *
- */
-function getAbsolutePath($current_file_path,$relative_path)
-{
-  $path=dirname($current_file_path).'/'.$relative_path;
-
-  return $path;
-}
-
-/**
- * add last slash for path
- */
-function appendSlash($path)
-{
-  return rtrim($path,"/")."/";
-}
-/** date functions **/
-
-
 /**
  * pick several values from array
  */
@@ -122,33 +42,6 @@ function pickArray($arr,$keys)
   return $data;
 }
 
-/*
-function getClientIp()
-{
-   // Get client ip address
-   if ( isset($_SERVER["REMOTE_ADDR"]))
-   $client_ip = $_SERVER["REMOTE_ADDR"];
-   else if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
-   $client_ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
-   else if ( isset($_SERVER["HTTP_CLIENT_IP"]))
-   $client_ip = $_SERVER["HTTP_CLIENT_IP"];
-
-   return $client_ip;
-}
- */
-
-function dump($data)
-{
-  if($data == false)
-    var_dump($data);
-  else
-    print_r($data);
-}
-
-
-/**
- * create guid
- */
 function guid($namespace = '') 
 {    
   static $guid = '';
@@ -177,124 +70,6 @@ function guid($namespace = '')
   return $guid;
 }
 
-
-/**
- * render a html content, support simple variables : {VAR}
- *
- * @return string  handled content
- */
-function renderContent($content,$params=array())
-{
-  //variable format
-  $var_format='{%s}';
-
-  //create replace array
-  $search=array();
-  $replace=array();
-  foreach($params as $k=>$v)
-  {
-    if(is_string($v) || is_numeric($v) || is_bool($v) )
-    {
-      //{VAR}
-      $search[]=sprintf($var_format,$k);
-      $replace[]=$v;
-    }
-  }
-
-  //replace now
-  $content=str_replace($search,$replace,$content);
-
-  return $content;
-}
-
-function post($url,$post_array)
-{
-
-  if(empty($url)){ return false;}
-
-  $fields_string =http_build_query($post_array);
-
-  //open connection
-  $ch = curl_init();
-
-  //set the url, number of POST vars, POST data
-  curl_setopt($ch,CURLOPT_URL,$url);
-  curl_setopt($ch, CURLOPT_POST, true);
-  curl_setopt($ch,CURLOPT_POSTFIELDS,$fields_string);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-
-  //curl_setopt($ch, CURLOPT_HEADER, 0);
-  //curl_setopt($ch, CURLOPT_VERBOSE, 0);
-  //curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible;)");
-
-  //execute post
-  $result = curl_exec($ch);
-
-  //close connection
-  curl_close($ch);
-
-  return $result;
-}
-
-function postFile($url,$name,$filepath,$post_array=array())
-{
-  if(empty($url))
-  { 
-    return false;
-  }
-
-
-  //open connection
-  $ch = curl_init();
-
-  //set the url, number of POST vars, POST data
-  curl_setopt($ch,CURLOPT_URL,$url);
-  curl_setopt($ch, CURLOPT_POST, true);
-
-  //$fields_string =http_build_query($post_array);
-  //curl_setopt($ch,CURLOPT_POSTFIELDS,$fields_string);
-
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-  curl_setopt($ch, CURLOPT_HEADER, 0);
-  curl_setopt($ch, CURLOPT_VERBOSE, 0);
-  curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible;)");
-
-  // same as <input type="file" name="file_box">
-  $post = array(
-    $name=>"@$filepath",
-  );
-
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $post); 
-
-  //execute post
-  $result = curl_exec($ch);
-
-  if($result == false)
-  {
-    return curl_error($ch);
-  }
-  //close connection
-  curl_close($ch);
-
-
-  return $result;
-}
-
-/**
- * if post failed , use this  to get error
- */
-/*
-function postError()
-{
-   return curl_error();
-}
- */
-
-/**
- * php variable assign to js variable
- */
 function php_var_to_js($js_var_name,$php_var)
 {
   $php_var=htmlentities($php_var,ENT_QUOTES,"UTF-8");
@@ -310,88 +85,6 @@ function php_var_to_js($js_var_name,$php_var)
   echo "\n";
   echo '<!-- php var to js end -->';
   echo "\n";
-}
-
-/**
- * load config from a file
- * in this file, it only has an variable: $config=array(...)
- */
-function load_config_file($path)
-{
-  if(Frd_File::exists($path) == false)
-  {
-    trigger_error("config file can not read");
-  }
-
-  require($path);
-
-  if(!isset($config))
-  {
-    trigger_error("variable config not exists");
-  }
-
-  return $config;
-}
-
-/**
- * insert an item to array
-
- * @param integer|string $postition can be position or key 
- * @param array  $insert_array 
- *
- */
-function array_insert (&$array, $position, $insert_array) 
-{
-  //for string key, find the position
-  if(is_string($position))
-  {
-    $i=0;
-    foreach($array as $k=>$v)
-    {
-      if($k == $position)
-      {
-        break;
-      }
-
-      $i++;
-    }
-
-    if($i >= count($array))
-    {
-      //not find
-      return false;
-    }
-
-  } 
-
-  $first_array = array_splice ($array, 0, $i+1);
-  $array = array_merge ($first_array, $insert_array, $array);
-
-  return true;
-}
-
-
-function nl($output=true)
-{
-  if($output)
-  {
-    echo "\n";
-  }
-  else
-  {
-    return "\n";
-  }
-}
-
-
-//decode json string to array
-function decode_json($string)
-{
-  if(trim($string) == false) return array();
-
-  $array=json_decode($string,true);
-
-  return $array;
 }
 
 //get value from an object or array
@@ -599,6 +292,157 @@ function _object_value_egeti($data,$k)   //if value ==0  throw exception
 }
 
 
+function is_https()
+{
+  if(isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on')
+    return true;
+  else
+    return false;
+}
+
+function getAbsolutePath($current_file_path,$relative_path)
+{
+  $path=dirname($current_file_path).'/'.$relative_path;
+
+  return $path;
+}
+
+function dump($data)
+{
+  if($data == false)
+    var_dump($data);
+  else
+    print_r($data);
+}
+
+/*
+function getClientIp()
+{
+   // Get client ip address
+   if ( isset($_SERVER["REMOTE_ADDR"]))
+   $client_ip = $_SERVER["REMOTE_ADDR"];
+   else if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
+   $client_ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+   else if ( isset($_SERVER["HTTP_CLIENT_IP"]))
+   $client_ip = $_SERVER["HTTP_CLIENT_IP"];
+
+   return $client_ip;
+}
+ */
+
+
+function http_post_file($url,$name,$filepath,$post_array=array())
+{
+  if(empty($url))
+  { 
+    return false;
+  }
+
+
+  //open connection
+  $ch = curl_init();
+
+  //set the url, number of POST vars, POST data
+  curl_setopt($ch,CURLOPT_URL,$url);
+  curl_setopt($ch, CURLOPT_POST, true);
+
+  //$fields_string =http_build_query($post_array);
+  //curl_setopt($ch,CURLOPT_POSTFIELDS,$fields_string);
+
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+  curl_setopt($ch, CURLOPT_HEADER, 0);
+  curl_setopt($ch, CURLOPT_VERBOSE, 0);
+  curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible;)");
+
+  // same as <input type="file" name="file_box">
+  $post = array(
+    $name=>"@$filepath",
+  );
+
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $post); 
+
+  //execute post
+  $result = curl_exec($ch);
+
+  if($result == false)
+  {
+    return curl_error($ch);
+  }
+  //close connection
+  curl_close($ch);
+
+
+  return $result;
+}
+
+/**
+ * insert an item to array
+
+ * @param integer|string $postition can be position or key 
+ * @param array  $insert_array 
+ *
+ */
+function array_insert (&$array, $position, $insert_array) 
+{
+  //for string key, find the position
+  if(is_string($position))
+  {
+    $i=0;
+    foreach($array as $k=>$v)
+    {
+      if($k == $position)
+      {
+        break;
+      }
+
+      $i++;
+    }
+
+    if($i >= count($array))
+    {
+      //not find
+      return false;
+    }
+
+  } 
+
+  $first_array = array_splice ($array, 0, $i+1);
+  $array = array_merge ($first_array, $insert_array, $array);
+
+  return true;
+}
+
+
+
+function nl($output=true)
+{
+  if($output)
+  {
+    echo "\n";
+  }
+  else
+  {
+    return "\n";
+  }
+}
+
+
+//decode json string to array
+function js_decode2($string)
+{
+  if(trim($string) == false) return array();
+
+  $array=json_decode($string,true);
+
+  return $array;
+}
+
+
+
+
+
+
 function successResponse($response=array())
 {
   $default =array(
@@ -633,11 +477,6 @@ function failedResponse($msg='',$data=array())
   return json_encode($response);
 }
 
-function getModule($name)
-{
-  return app()->getModule($name);
-  //return Frd::getModule($folder,$class_name);
-}
 
 function http_post($url,$post_array)
 {
@@ -687,3 +526,133 @@ function http_get($url,$params=array())
 
    return file_get_contents($url);
 }
+
+
+function today($format="Y-m-d")
+{
+  return date($format);
+}
+
+function now($format="Y-m-d H:i:s")
+{
+  return date($format);
+}
+
+
+
+function pagination($total,$page_count,$page_current,$page_baseurl)
+{
+  $page_total=ceil($total/$page_count);
+
+
+  $x=2; 
+
+  $pages=array();
+
+
+  for($i=$page_current-$x; $i< ($page_current+$x+1) ; $i++)
+  {
+    $pages[]=$i;
+  }
+
+  //filter
+  foreach($pages as $k=>$page)
+  {
+    if($page <=0 || $page > $page_total)
+    {
+      unset($pages[$k]);
+    }
+  }
+
+  $html='<nav>'
+    .'<ul class="pagination">'
+    .'<li>'
+    .'<a href="'.$page_baseurl.'?page=1" aria-label="First">'
+    .'<span aria-hidden="true">&laquo;</span>'
+    .'</a>'
+    .'</li>';
+
+    foreach($pages as $page)
+    {
+      if($page == $page_current)
+      {
+        $class="active";
+      }
+      else
+      {
+        $class="";
+      }
+
+      $html.='<li class="'.$class.'"><a href="'.$page_baseurl.'?page='.$page.'">'.$page.'</a></li>';
+    }
+
+
+    $html.='<li>'
+    .'<a href="'.$page_baseurl.'?page='.$page_total.'" aria-label="Last">'
+    .'<span aria-hidden="true">&raquo;</span>'
+    .'</a>'
+    .'</li>'
+    .'</ul>'
+    .'</nav>';
+
+
+  return $html;
+}
+
+
+function array_get($array,$key,$default=null)
+{
+  if(isset($array[$key]))
+  {
+    return $array[$key];
+  }
+  else
+  {
+    return $default;
+  }
+}
+
+//仅仅处理值，并不验证
+//handle_var($value,"trim");
+//handle_var($value,"int");
+//handle_var($value,"boolean");
+//handle_var($value,"custom","function_name");
+function handle($var,$type,$option=false)
+{
+  if($type == 'trim')
+  {
+    return trim($var);
+  }
+  else if($type == 'int')
+  {
+    return intval($var);
+  }
+  else if($type == 'boolean')
+  {
+    return (boolean) $var;
+  }
+  else if($type == 'custom')
+  {
+    $func=$option;
+    return $func($var);
+  }
+  else
+  {
+    error("unkonw handle type:".$type);
+  }
+}
+
+
+function validate($var,$type,$option='')
+{
+  if($type == "bg")
+  {
+    $number=intval($option);
+    return $var >= $number;
+  }
+  else
+  {
+    error("unkonw validate type:".$type);
+  }
+}
+
