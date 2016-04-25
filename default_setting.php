@@ -1,6 +1,6 @@
 <?php
 
-   $default_setting=array(
+   $setting_default=array(
       'baseurl'=>'/',
       'module.dir'=>ROOT_PATH.'/modules',
       'module.default'=>'default',

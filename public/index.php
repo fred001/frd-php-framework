@@ -14,11 +14,11 @@ if(file_exists(ROOT_PATH."/local/setting.php"))
 {
   require_once(ROOT_PATH."/local/setting.php");
 
-  $setting=array_merge($default_setting,$setting);
+  $setting=array_merge($setting_default,$setting);
 }
 else
 {
-  $setting=$default_setting;
+  $setting=$setting_default;
 }
 
 
@@ -39,8 +39,8 @@ catch(Exception $e)
   else
   {
      throw $e;
-    error_log($e);
-    app()->run("/error");
+    //error_log($e);
+    //app()->run("/error");
     //require_once(ROOT_PATH."/error/error.php");
   }
 }
