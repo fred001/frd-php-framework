@@ -16,6 +16,7 @@ class Frd_Route
   }
    */
 
+   /*
   function rewriteByCustom($path)
   {
     if(count($this->custom_rules) == 0) return false;
@@ -91,7 +92,9 @@ class Frd_Route
 
     return false;
   }
+  */
 
+  /*
   function rewriteByDefault($path)
   {
     //rule :  MODULE/CONTROLLER
@@ -171,6 +174,7 @@ class Frd_Route
       return $params;
     }
   }
+  */
 
   /*
   function rewrite($path)
@@ -242,8 +246,12 @@ class Frd_Route
       $params_rewrite=$rule['params_rewrite'];
 
       $match=array();
+      //echo $pattern;
+      //echo "\n";
+      //echo $path;
       if(($ret=preg_match($pattern,$path,$match)) == false)
       {
+         //echo 'aa';
         continue;
       }
 
@@ -251,6 +259,7 @@ class Frd_Route
       //var_dump($pattern);
       //var_dump($path);
       //var_dump($match);
+      //exit();
 
       $params=array();
       foreach($params_rewrite as $k=>$v)
@@ -265,6 +274,8 @@ class Frd_Route
 
         $params[$k]=$v;
       }
+
+      //var_dump($params);exit();
 
       //check path ( module+controller)
       if(!isset($params['path']))
@@ -287,7 +298,7 @@ class Frd_Route
     return array();
   }
 
-  function validPath($path) 
+  protected function validPath($path) 
   {
     //rule :  MODULE/CONTROLLER
     if($path == false) return false;
@@ -304,7 +315,6 @@ class Frd_Route
     while(count($parts) > 0)
     {
       $modules[]=array_shift($parts);
-
       if($app->moduleExists(implode("/",$modules)))
       {
         $count=count($parts);
@@ -320,6 +330,7 @@ class Frd_Route
           {
             if($success == true)
             {
+               array_pop($controllers);
               break;
             }
 
@@ -351,6 +362,7 @@ class Frd_Route
     }
     else
     {
+       //var_dump($controllers);exit();
       foreach($controllers as $controller)
       {
         array_shift($parts);

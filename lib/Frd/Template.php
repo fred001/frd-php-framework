@@ -173,10 +173,12 @@ class Frd_Template
 
     //extract($this->getVars());
 
+    /*
     if(count($vars) > 0)  
     {
       extract($vars);
     }
+    */
 
     //speical important variables
     if(isset($this->vars['_module']))
@@ -190,7 +192,6 @@ class Frd_Template
     $content=$this->handle($content);
 
     return $content;
-
   }
 
   function module_render($module_name,$path,$vars=array())
