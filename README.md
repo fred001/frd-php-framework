@@ -10,3 +10,7 @@
     基於 Zend Frameworkd v1 ,可以重用 zend 功能
     模仿Yii, 具备Yii 的框架功能
 
+
+    OS Requirement:    unix/linux
+    Document: <a target="_blank" href="http://iamlosing.me/frd_framework">document</a>
+    Install: get the source code  run ./install
