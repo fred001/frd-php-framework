@@ -22,7 +22,7 @@
    $output=filter_template_output($output);
    assert($output == "<h1>Frd Framework</h1>hello frd framework");
 
-   echo "success";
+   //echo "success";
 
    function filter_template_output($string)
    {

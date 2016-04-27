@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+#desc:
+#
+#
+
+php db.php
+php db.table.php
+php init.php
+php module.php
+php route.php
+php template.php

@@ -2,7 +2,7 @@
 require_once("functions/functions.php");
 require_once("Frd/App.php");
 require_once("Frd/Loader.php");
-require_once("Frd/Client.php");
+//require_once("Frd/Client.php");
 
 class Frd
 {

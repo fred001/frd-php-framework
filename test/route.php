@@ -67,4 +67,4 @@
    assert($result == $expect);
 
 
-   echo "success";
+   //echo "success";
