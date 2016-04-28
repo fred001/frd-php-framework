@@ -1,11 +1,31 @@
-#!/usr/bin/bash
-#desc:
-#
-#
+#!/usr/bin/env php
+<?php
+   require_once("init.php");
 
-php db.php
-php db.table.php
-php init.php
-php module.php
-php route.php
-php template.php
+   $files=array(
+      "db.php",
+      "db.table.php",
+      "module.php",
+      "route.php",
+      "template.php",
+   );
+
+   $success=true;
+   foreach($files as $filename)
+   {
+      $cmd="php $filename";
+
+      list($stdout,$stderr)= execute_cmd($cmd);
+      if($stderr != false)
+      {
+         echo "Error:".$cmd."\n";
+         $success=false;
+      }
+   }
+
+   if($success == true)
+   {
+      echo "All Test Success! \n";
+   }
+
+
