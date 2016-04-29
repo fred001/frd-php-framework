@@ -17,6 +17,12 @@ sys.path.append('/home/frd/lib/python')
 import db
 from functions import *
 
+print "----Install---"
+print "step 1: local setting"
+print "step 2: remove unnecessary files of your project"
+print ""
+print "after install finished, you can delete install program self"
+print ""
 
 #path_local_setting=
 root_path=os.path.dirname(os.path.abspath(__file__))
@@ -56,4 +62,17 @@ print ""
 print ">Delete Unnecessary Files"
 
 
+files=[
+  "README.md",
+  "test",
+  "doc",
+  ".git",
+]
 
+for filename in files:
+  if os.path.isfile(filename):
+    print ">>delete %s"  %(filename)
+    #os.unlink(filename)
+  elif os.path.isdir(filename):
+    print ">>delete %s/"  %(filename)
+    #shutil.rmtree(filename)
