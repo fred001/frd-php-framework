@@ -5,9 +5,9 @@ $setting=array(
     'default'=>array(
       'adapter' => 'pdo_mysql',
       'host' => "localhost",
-      'dbname' => "test",
-      'username' => "root",
-      'password' => "",
+      'dbname' => "aa",
+      'username' => "bb",
+      'password' => "cc",
     )
   ),
 );

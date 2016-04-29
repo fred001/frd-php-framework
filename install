@@ -2,7 +2,10 @@
 #install frd framework
 # actuall just delete files which will not used for user's project
 
-rm "HISTORY"
-rm "install"
-rm "README.md"
-rm "test"
+
+#rm "HISTORY"
+#rm "install"
+#rm "README.md"
+#rm "test"
+
+
