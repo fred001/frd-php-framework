@@ -13,10 +13,6 @@ from time import strftime
 from time import sleep
 
 
-sys.path.append('/home/frd/lib/python')
-import db
-from functions import *
-
 print "----Install---"
 print "step 1: local setting"
 print "step 2: remove unnecessary files of your project"
