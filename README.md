@@ -11,6 +11,19 @@
     模仿Yii, 具备Yii 的框架功能
 
 
-    OS Requirement:    unix/linux
+    OS Requirement:    unix/linux  (but only tested in centos7)
     Document: <a target="_blank" href="http://iamlosing.me/frd_framework">document</a>
-    Install: get the source code  run ./install
+    Install: 
+        git clone https://github.com/fred001/frd-php-framework.git
+        cd frd-php-framework
+        python install.py
+            (enter the website's document root path (TARGET_PATH))
+
+        after install finished
+          1, setup your webservice with the document root (TARGET_PATH/public)
+          2, setup website's setting (TARGET_PATH/local/setting.php)
+
+          3, visit the website ,no error and see the "hello world",that means install successful.
+
+
+

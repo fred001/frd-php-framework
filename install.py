@@ -12,6 +12,7 @@ from random import randint
 from time import strftime
 from time import sleep
 
+"""
 
 print "----Install---"
 print "step 1: local setting"
@@ -72,3 +73,49 @@ for filename in files:
   elif os.path.isdir(filename):
     print ">>delete %s/"  %(filename)
     #shutil.rmtree(filename)
+"""
+
+
+"""
+Install : 
+  copy file to dest
+"""
+
+TARGET_FOLDER=""
+
+while not TARGET_FOLDER:
+  TARGET_FOLDER=raw_input("please enter install folder path:\n")
+
+  if not os.path.exists(TARGET_FOLDER):
+    print "please enter an exists path"
+    TARGET_FOLDER=""
+
+TARGET_FOLDER=TARGET_FOLDER.rstrip("/")
+#print TARGET_FOLDER
+
+#copy files
+COPY_FILES=[
+  'default_setting.php',
+  'functions.php',
+  'lib/',
+  'local/',
+  'modules/',
+  'public/',
+]
+
+for filename in COPY_FILES:
+  dest=TARGET_FOLDER+"/"+filename
+  if os.path.isfile(filename):
+    shutil.copy(filename,dest)
+  elif os.path.isdir(filename):
+    shutil.copytree(filename,dest)
+
+  print "copy %s ==>  %s" %(filename,dest)
+
+print "install finished !"
+print ""
+print "\tnow please setup your web server with the documentroot:"
+print "\t"+TARGET_FOLDER+"/public"
+print ""
+print "\tthen config the db setting in \n\t%s" %(TARGET_FOLDER+"/local/setting.php")
+
