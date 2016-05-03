@@ -1,8 +1,10 @@
+<a href="<?php echo url('blog/add'); ?>">Add Blog</a>
 <table class="table">
    <thead>
       <tr>
          <th>Title</th>
          <th>Content</th>
+         <th>Action</th>
       </tr>
    </thead>
    <tfoot>
@@ -12,6 +14,10 @@
       <tr>
          <td><?php echo $row['title']; ?></td>
          <td><?php echo $row['content']; ?></td>
+         <td>
+            <a href="<?php echo url("blog/edit/id/".$row['id']); ?>">Edit</a>
+            <a href="<?php echo url("blog/delete?id=".$row['id']); ?>">Delete</a>
+         </td>
       </tr>
       <?php endforeach; ?>
    </tbody>
