@@ -1,0 +1,26 @@
+=========================Frd_Template=====================
+location: 
+  lib/Frd/Template.php
+
+Explanation:
+    the default extension is .phtml
+
+    Render A Tempalte:
+      $t=new Frd_Template();
+      //$t->render(PATH,VARS);
+      $path=getModule('default')->getPath("templates/test");
+      echo $t->render($path,array("name"=>"framework"); 
+
+
+    Subtemplate Render:
+      in emplate call $this->render(PATH,VARS)  to render subtempalte
+      and the path will based on parent's path
+
+      subtemplate do not inherit parent's variable
+      if in parent template have variable  
+
+
+    (need improve later)
+
+
+

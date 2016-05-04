@@ -1,0 +1,110 @@
+=========================Frd_Module=======================
+Location: 
+  lib/Frd/Module.php
+
+Explanation:
+  Zend Framework 1's code organization  is  module+controller+action
+  but Frd Framework's  code organization is  module+controller
+
+  there are 3 settings for module:
+    'module.dir'=>ROOT_PATH.'/modules',  //define the module's folder
+    'module.default'=>'default',   //default module name
+    'module.controller.default'=>'index', //default contoller name
+
+  so a default controller is   default/index
+  and the path is :  ROOT_PATH.'/modules/default/controller/index.php'
+  and the  url is :  http://www.example.com/default/index
+
+  the module and conttoller name can be ignored ,so the url is also 
+  http://www.example.com
+
+  here are some examples:
+
+  http://www.example.com/
+      module:     default
+      controller: index
+
+  http://www.example.com/default
+      module:     default
+      controller: index
+
+  http://www.example.com/index
+      module:     index
+      controller: index
+
+      or 
+
+      module:     default
+      controller: index
+
+      ( first check if first works ,if not ,try the second )
+
+
+  http://www.example.com/default2
+      module:     default2
+      controller: index
+
+  http://www.example.com/index
+      module:     index2
+      controller: index
+
+      or 
+
+      module:     default
+      controller: index2
+
+      ( first check if first works ,if not ,try the second )
+
+
+  Module Folder's structure:
+    the module folder will always need a file "main.php"
+    and this file defined the module's class  
+    it seems not a normal class file,but it should be a class file
+    the class do not need same name as module name
+
+    for module "default" ,the main.php's class is  
+
+    class Index extends Frd_Module
+    {
+    }
+
+    that because the "default" is a keyword, can not as class name ...
+
+    the class's methods can be empty.
+
+
+    the module folder can also include many folders,
+    these folders should use 2 name formats 
+    the first is class folder (first character is upper)
+      and each file also should be class file 
+
+    the second any format
+
+  Module How To Use:
+    first is get the module class instance
+
+    out of module :  getModule("MODULE_FOLDER_NAME") //it is the module folder, not the module's main.php's class name
+
+    in module, use  $_module or  $this->_module
+    for example:
+      code: getModule("default")->getPath("controller/index");
+      this will load the file  MODULE/controller/index.php
+      and will also create a variable  $_module before load this file
+
+      so in this file can always use  $_module to visit it's module,
+      and call any module's methods
+
+
+
+    example2:
+      code: getModule("default")->getTable("blog");
+      this will load the class file  MODULE/Table/Blog.php
+      and will also create an attribute  $_module for the class object
+
+      so in the class can use  $this->_module to call the module's methods
+      this is not a good way, it added unpected attribute for an object,
+      but before find a better way, it still will be used
+
+
+    (module is a new concept, seemd need much explanations,now you can look at the blog example code to check how to use it)
+

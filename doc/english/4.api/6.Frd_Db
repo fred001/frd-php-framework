@@ -1,0 +1,27 @@
+=========================Frd_Db=====================
+location: 
+  lib/Frd/Db.php
+
+Explanation:
+  this is inherit from zf1's  Zend_Db
+  so same document as Zend_Db
+
+  some basic usage:
+    $db=app()->getDb();
+
+    or
+
+    $db=app()->getDb("default");
+
+    $db->query(SQL);
+    $rows=$db->fetchAll(SQL);
+
+    $select=$db->select();
+    $select->....
+
+    $rows=$db->fetchAll($select);
+
+    //the WHERE should use db to quote
+    $db->update(TABLE_NAME,array("title"=>"test2",WHERE)
+
+

@@ -1,0 +1,54 @@
+=======================Frd_App=======================
+location: 
+  lib/Frd/App.php
+
+Explanation:
+  normally a website means all cod
+
+  but here App means the whold project , it is like a platform,
+  and each module is actually a website
+
+  Frd_App is the Framework's interface
+  user can get this object by interface function app()
+
+  $app=app()
+
+  it include methods:
+
+  //which load from index.php
+  __construct($setting)  
+
+  //but do not have setSetting
+  //setting should not be dynamicly
+  getSetting($k,$default=null) 
+
+
+  //for user set/get global variables
+  getGlobal($key,$default=null)
+  hasGlobal($key)
+  setGlobal($key,$value)
+
+
+  //get db object "default" is the name in setting
+  //in setting ,user can defined multiple db 
+  //and choose get which db
+  //but actually now only support one db...
+  getDb($name='default')
+
+
+  //
+  getModule($name)
+
+
+  //core method
+  //url_path is false as default
+  //but when user need test a special path
+  //set this param to test
+  run($url_path=false)
+
+
+  //convert a path to url
+  //this depends the  baseurl in setting
+  url($path,$params=array())
+
+
