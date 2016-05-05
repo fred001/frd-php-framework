@@ -7,6 +7,8 @@
    define("ROOT_PATH",dirname(__FILE__).'/../');
    require_once(ROOT_PATH."/functions.php");
 
+   require_once(ROOT_PATH."/test/functions.php");
+
    //read config
    require_once(ROOT_PATH."/default_setting.php");
 
@@ -20,6 +22,14 @@
    {
       $setting=$setting_default;
    }
+
+   $setting['dbs']['default']=array(
+      'adapter' => 'pdo_mysql',
+      'host' => "localhost",
+      'dbname' => "test",
+      'username' => "root",
+      'password' => "",
+   );
 
 
    Frd::init($setting);

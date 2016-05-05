@@ -112,6 +112,13 @@ for filename in COPY_FILES:
 
   print "copy %s ==>  %s" %(filename,dest)
 
+#remove module's blog code
+shutil.rmtree(TARGET_FOLDER+"/modules/default/controller/blog")
+shutil.rmtree(TARGET_FOLDER+"/modules/default/templates/blog")
+os.unlink(TARGET_FOLDER+"/modules/default/Object/Blog.php")
+os.unlink(TARGET_FOLDER+"/modules/default/Table/Blog.php")
+
+
 print "install finished !"
 print ""
 print "\tnow please setup your web server with the documentroot:"

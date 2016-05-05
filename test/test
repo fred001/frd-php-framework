@@ -3,29 +3,42 @@
    require_once("init.php");
 
    $files=array(
+      "route.php",
+      "module.php",
+      "template.php",
       "db.php",
       "db.table.php",
-      "module.php",
-      "route.php",
-      "template.php",
    );
+
+   $error_cmds=array();
 
    $success=true;
    foreach($files as $filename)
    {
       $cmd="php $filename";
+      echo ">test $filename\n";
 
       list($stdout,$stderr)= execute_cmd($cmd);
       if($stderr != false)
       {
-         echo "Error:".$cmd."\n";
+         $error_cmds[]=$cmd;
          $success=false;
       }
    }
 
+   echo "\n";
+   echo "\n";
    if($success == true)
    {
       echo "All Test Success! \n";
+   }
+   else
+   {
+      echo "Failed\n";
+      foreach($error_cmds as $cmd)
+      {
+         echo "\t".$cmd."\n";
+      }
    }
 
 
