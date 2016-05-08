@@ -1,9 +1,12 @@
-# frd-php-framework
+frd-php-framework
+===========================
 
-description:
+description
+---------------------------
   a small ,quick php framework
 
-feature:
+feature
+---------------------------
     易于阅读，易于使用 ，对程序员友好
     稳定 ， 有完善的测试代码
     可扩展 ，可以扩展本身的功能， 替换组件，
@@ -13,7 +16,8 @@ feature:
     模仿Yii, 具备Yii 的框架功能
 
 
-DOCUMENTS:
-  look at the source code  
-  english: doc/englist
+DOCUMENT
+---------------------------
+  in the source code folder
+  english: doc/english
   chinese: doc/chinese

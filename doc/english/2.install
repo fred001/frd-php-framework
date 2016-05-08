@@ -7,8 +7,7 @@ OS Requirement:    unix/linux  (but only tested in centos7)
   (enter the website's document root path (TARGET_PATH))
 
   after install finished
-1, setup your webservice with the document root (TARGET_PATH/public)
-  2, setup website's setting (TARGET_PATH/local/setting.php)
-
-  3, visit the website ,no error and see the "hello world",that means install successful.
+1, setup your web service with the document root (TARGET_PATH/public)
+2, setup website's setting (TARGET_PATH/local/setting.php)
+3, visit the website ,no error and see the "hello world",that means successful.
 

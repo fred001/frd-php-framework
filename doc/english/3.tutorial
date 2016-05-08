@@ -1,7 +1,6 @@
 Tutorial: use frd framework create  blog manage pages
 
-  first make sure you have installed the framework as the INSTALL part described
-
+  first make sure you have installed the framework as the 2.install
 
   1.setup setting (local/setting.php)
   2. create database table
@@ -12,8 +11,8 @@ Tutorial: use frd framework create  blog manage pages
           title char(100) not null default '',
           content text);
 
-  now try create blog function
-  need 4 pages:  list, add ,edit,delete
+  now try create blog functions
+  here  need 4 pages:  list, add ,edit,delete
   before work on these pages, create some basic function first
   normally a website's page wil need a layout + current page's content
   so first create the basic layout
@@ -26,18 +25,18 @@ Tutorial: use frd framework create  blog manage pages
 
     this method return a template object with the layout template file
 
-  now is time to create the blog pages
+  now it is time to create the blog pages
 
   blog list page:
     1. define the url   /blog/list
         so the controller file is   modules/default/controller/blog/list.php
 
     2.create the file  modules/default/controller/blog/list.php
-      is this controller file choose render a template file "blog/list"
+      in this controller file choose render a template file "blog/list"
       so the template file is  modules/default/templates/blog/list.phtml
 
       of course it is free to choose render other template file,
-      but normally render the same name of controller
+      but normally render the same name as controller name
 
     3.create the template file   modules/default/templates/blog/list.phtml
     4.the detail you can look at these files,now the list page finished,

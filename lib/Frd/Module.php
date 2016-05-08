@@ -200,6 +200,9 @@ class Frd_Module
     $_module=$this;
     $_controller=$controller;
 
+    app()->setGlobal("_module",$_module);
+    app()->setGlobal("_controller",$_controller);
+
     $path=$this->getPath("controller/$controller.php");
     if(file_exists($path) == false)
     {
