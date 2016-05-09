@@ -1,24 +1,22 @@
 <?php
-
 require_once("Zend/Db.php");
 require_once("Frd/Route.php");
-require_once("Frd/Object.php");
+//require_once("Frd/Object.php");
 
 class Frd_App
 {
-  protected $config=array();
+  //protected $config=array();
   protected $global=array();
 
   protected $dbs=array();
-
   protected $modules=array();
 
   //object
   protected $route=null;
-  protected $request=null;
+  //protected $request=null;
 
-  protected $session=null;
-  protected $session_user=null; //session for user
+  //protected $session=null;
+  //protected $session_user=null; //session for user
 
   //settings
   protected $baseurl='';
@@ -26,12 +24,14 @@ class Frd_App
   protected $module_default='';
   protected $module_controller_default='';
 
-  protected $session_unique_key=false;
+  //protected $session_unique_key=false;
 
   //plugins
+  /*
   protected $plugins=array(
     'before_run_controller'=>false,
   );
+  */
 
   function __construct($setting)
   {
@@ -62,9 +62,10 @@ class Frd_App
     $this->setting=$setting;
 
     $this->route=new Frd_Route();
-    $this->request=new Frd_Object();
+    //$this->request=new Frd_Object();
   }
 
+  /*
   function registerPlugin($name,$function)
   {
     if(!isset($this->plugins[$name]))
@@ -74,6 +75,7 @@ class Frd_App
 
     $this->plugins[$name]=$function;
   }
+  */
 
   function setBaseurl($baseurl)
   {
@@ -82,7 +84,14 @@ class Frd_App
 
   function getSetting($k,$default=null)
   {
-    return value_get($this->setting,$k,$default);
+     if(isset($this->setting[$k]))
+     {
+        return $this->setting[$k];
+     }
+     else
+     {
+        return $default;
+     }
   }
 
   function getRoute()
@@ -101,6 +110,7 @@ class Frd_App
   {
     return value_get($this->global,$key);
   }
+
   public function hasGlobal($key)
   {
     return isset($this->global[$key]);
@@ -259,6 +269,7 @@ class Frd_App
     return $class_name;
   }
   //config
+  /*
   public function setConfig($key,$value)
   {
     $this->config[$key]=$value;
@@ -285,8 +296,10 @@ class Frd_App
   {
     return $this->config;
   }
+  */
 
   /*** session ***/
+  /*
   function startSession()
   {
     session_start();
@@ -400,6 +413,7 @@ class Frd_App
 
   }
 
+  */
   protected function getUrlPath($url_path)
   {
     if($url_path == false)
@@ -494,16 +508,18 @@ class Frd_App
 
     $_GET=array_merge($params,$_GET); 
 
-    $this->request->setData($_GET);
+    //$this->request->setData($_GET);
 
 
     //
+    /*
     if($this->plugins["before_run_controller"] != false)
     {
       $function=$this->plugins['before_run_controller'];
 
       $function($module,$controller);
     }
+    */
 
     //
     $module=$this->getModule($module);

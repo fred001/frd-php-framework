@@ -1,5 +1,5 @@
 <?php
-require_once("functions/functions.php");
+//require_once("functions/functions.php");
 require_once("Frd/App.php");
 require_once("Frd/Loader.php");
 //require_once("Frd/Client.php");
@@ -14,17 +14,19 @@ class Frd
   protected static $loader=null;  //loader
 
   //
-  public static $baseurl=false;
-  public static $module_path='';
-  protected static $setting=false;
+  //public static $baseurl=false;
+  //public static $module_path='';
+  //protected static $setting=false;
 
   //old,should remove
-  protected static $current=false;
+  //protected static $current=false;
 
+  /*
   public static function getVersion()
   {
     return "20140929-0.0.7";
   }
+  */
 
   //init framework
   public static function init($setting=array(),$app=false)
@@ -65,7 +67,7 @@ class Frd
       self::$app=$app;
     }
 
-    $routes=value_get($setting,'routes');
+    $routes=$setting['routes'];
 
     if($routes != false && is_array($routes))
     {
@@ -126,6 +128,7 @@ class Frd
   }
    */
 
+   /*
   public static function getClient()
   {
     $client=self::$app->getGlobal('_client');
@@ -159,9 +162,11 @@ class Frd
   {
     self::$current=new Frd_Current();
   }
+  */
 
 
 
+  /*
   public static function getClass()
   {
     $args=func_get_args();
@@ -239,6 +244,7 @@ class Frd
 
     return $class;
   }
+  */
 
   /**
    * can be path or url

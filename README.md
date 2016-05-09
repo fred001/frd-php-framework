@@ -21,3 +21,8 @@ DOCUMENT
   in the source code folder
   english: doc/english
   chinese: doc/chinese
+
+Next Target
+---------------------------
+    No Target
+    waiting for new ideas

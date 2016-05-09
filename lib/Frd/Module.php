@@ -40,6 +40,7 @@ class Frd_Module
   }
    */
 
+   /*
   function getTemplatePath($template_path)
   {
     $file=$this->module_dir."/templates/$template_path".".phtml";
@@ -52,21 +53,25 @@ class Frd_Module
     $file=$this->module_dir."/templates";
     return $file;
   }
+  */
 
+  /*
   function getTemplateDir()
   {
     $file=$this->module_dir."/templates";
     return $file;
   }
+  */
 
   /**
    * not classname, because folder path is used for get module
    */
+   /*
   function getName()
   {
     return $this->module_dir;
   }
-
+  */
 
   function getPath($path=false)
   {
@@ -84,7 +89,7 @@ class Frd_Module
    * class are under  Model
    */
   //function getClass($path,$prefix='Model',$class_prefix=false,$params=array())
-  function getClass($name,$prefix='Model',$params=array())
+  protected function getClass($name,$prefix='Model',$params=array())
   {
     //$name=Frd_Loader::pathToClass($name);
     $realpath=Frd_Loader::pathToRealpath($name);
@@ -115,6 +120,8 @@ class Frd_Module
 
   /**
    * support  get{KEY}  method
+
+   getTable("blog",array())
    */
   function __call($func,$params)
   {
@@ -125,23 +132,23 @@ class Frd_Module
 
 
       //set module variable
-
       $name=$params[0];
       array_shift($params);
 
+      //name : Blog, key: Table,$params : array
       $class= $this->getClass($name,$key,$params);
       /*
       if(count($params) >= 2)
       {
-        $class= $this->getClass($params[0],$key,$key,$params[1]);
+         $class= $this->getClass($params[0],$key,$key,$params[1]);
       }
       else
       {
-        $class= $this->getClass($params[0],$key,$key);
+         $class= $this->getClass($params[0],$key,$key);
       }
-*/
+      */
 
-      $class->_module=$this;
+      //$class->_module=$this;
 
       return $class;
     }
@@ -162,6 +169,7 @@ class Frd_Module
   }
 
 
+  /*
   protected function loadConfig($path)
   {
     $config_path=$this->getpath()."/config/$path".".php";
@@ -176,14 +184,17 @@ class Frd_Module
       return false;
     }
   }
+  */
 
   //============depened module ====================
+  /*
   function getDependModule()
   {
     if(!isset($this->_depend_modules[$name]))
     {
       //error,not in depend
-      throw new Exception("module get other module not depend:".$this->getName().' -> '.$name);
+      //throw new Exception("module get other module not depend:".$this->getName().' -> '.$name);
+      throw new Exception("module get other module not depend:".$this->module_dir.' -> '.$name);
     }
 
     if( $this->_depend_modules[$name] == null )
@@ -193,15 +204,16 @@ class Frd_Module
 
     return $this->_depend_modules[$name] ;
   }
+  */
 
 
   function runController($controller)
   {
-    $_module=$this;
-    $_controller=$controller;
+    //$_module=$this;
+    //$_controller=$controller;
 
-    app()->setGlobal("_module",$_module);
-    app()->setGlobal("_controller",$_controller);
+    app()->setGlobal("_module",$this);
+    app()->setGlobal("_controller",$controller);
 
     $path=$this->getPath("controller/$controller.php");
     if(file_exists($path) == false)
@@ -215,13 +227,16 @@ class Frd_Module
   function render($path,$vars=array())
   {
     $template=new Frd_Template();
-    $template->setDir($this->getTemplateDir());
+
+    $dir=$this->module_dir."/templates";
+    $template->setDir($dir);
     $template->assign($vars);
     $template->setPath($path);
 
     return $template->render();
   }
 
+  /*
   function renderWithLayout($layout_path,$path,$vars=array())
   {
     $layout=new Frd_Template();
@@ -232,14 +247,13 @@ class Frd_Module
     $layout->template_content=$path;
 
 
-    /*
     $template=new Frd_Template();
     $template->setDir($this->getTemplateDir());
     $template->assign($vars);
     $template->setPath($path);
     $layout->content=$template->render();
-     */
 
     return $layout->render();
   }
+  */
 }
