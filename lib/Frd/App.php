@@ -94,6 +94,11 @@ class Frd_App
      }
   }
 
+  function getSettings()
+  {
+     return $this->setting;
+  }
+
   function getRoute()
   {
     return $this->route;
@@ -108,7 +113,14 @@ class Frd_App
    */
   public function getGlobal($key,$default=null)
   {
-    return value_get($this->global,$key);
+     if(isset($this->global[$key]))
+     {
+        return $this->global[$key];
+     }
+     else
+     {
+        return $default;
+     }
   }
 
   public function hasGlobal($key)
