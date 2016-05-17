@@ -14,3 +14,13 @@
       return app()->url($path,$params);
    }
 
+   function module()
+   {
+      return app()->getGlobal("_module");
+   }
+
+   function controller()
+   {
+      return app()->getGlobal("_controller");
+   }
+
