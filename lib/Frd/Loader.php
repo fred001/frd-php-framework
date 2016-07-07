@@ -138,6 +138,16 @@
       //aaa/bbb/cCC =>  Aaa_Bbb_CCC
       public static function pathToClass($path)
       {
+         // Aa_bb_cc => Aa_Bb_Cc
+         $values=explode('_',$path); 
+
+         foreach($values as $k=>$value)
+         {
+            $values[$k]=ucfirst($value); 
+         }
+
+         $path=implode("",$values);
+
          $values=explode('/',$path); 
 
          foreach($values as $k=>$value)
@@ -153,6 +163,17 @@
       //aaa/bbb/cCC =>  Aaa/Bbb/CCC
       public static function pathToRealpath($path)
       {
+         // Aa_bb_cc => Aa_Bb_Cc
+         $values=explode('_',$path); 
+
+         foreach($values as $k=>$value)
+         {
+            $values[$k]=ucfirst($value); 
+         }
+
+         $path=implode("",$values);
+
+
          $values=explode('/',$path); 
 
          foreach($values as $k=>$value)
@@ -161,6 +182,7 @@
          }
 
          $realpath=implode("/",$values);
+
 
          return $realpath;
       }

@@ -1,11 +1,14 @@
 <?php
+   require_once("Frdextra/Profiler/Db.php");
+   require_once("Frdextra/File.php");
+
    class Frd_Profiler
    {
       protected $times=array();
       protected $db=false;
       function __construct()
       {
-         $db=getDb();
+         $db=app()->getDb();
          if($db == false)
          {
             $this->db=$db;
@@ -20,27 +23,14 @@
 
       function renderTime()
       {
-         if(defined(FRD_START_MICROTIME))
-         {
-            $this->times['start']=FRD_START_MICROTIME;
-         }
-         else
-         {
-            $this->times['start']=$_SERVER['REQUEST_TIME'];
-         }
+         $time_start=$_SERVER['REQUEST_TIME'];
 
-         //end
-         $this->times['end']=$this->getMicroTime();
+         $time_end=$this->getMicroTime();
 
          //total
-         $this->times['total']=$this->times['end']-$this->times['start'];
+         $time_total=round($time_end-$time_start,4);
 
-         //render
-         //$template=new Frd_Template();
-         //$path=Frd::getFrdTemplatePath("profiler/time.phtml");
-         //$html=$template->render($path,array('times'=>$this->times));
-
-         //return $html;
+         return array('total'=>$time_total);
       }
 
 
@@ -49,16 +39,12 @@
       {
          //add start
          $memory= array();
-         //$memory['used'] = $this->getReadableFileSize(memory_get_peak_usage());
+         $memory['limit'] = ini_get("memory_limit");
+         //$memory['used'] = Frd_File::getReadableFileSize(memory_get_peak_usage());
          $memory['used'] = memory_get_peak_usage();
-         $memory['total'] = ini_get("memory_limit");
 
-         //render
-         $template=new Frd_Template();
-         $path=Frd::getFrdTemplatePath("profiler/memory.phtml");
-         $html=$template->render($path,array('memory'=>$memory));
 
-         return $html;
+         return $memory;
       }
 
       function renderFileData()
@@ -91,18 +77,11 @@
          //sort files
          usort($fileList,"frd_profiler_file_cmp");
 
-         $fileTotals['size'] = Frd_File::getReadableFileSize($fileTotals['size']);
+         //$fileTotals['size'] = Frd_File::getReadableFileSize($fileTotals['size']);
+         $fileTotals['size'] = $fileTotals['size'];
          $fileTotals['largest'] = Frd_File::getReadableFileSize($fileTotals['largest']);
 
-         //render
-         $template=new Frd_Template();
-         $path=Frd::getFrdTemplatePath("profiler/files.phtml");
-         $html=$template->render($path,array(
-            'files'=>$fileList,
-            'file_totals'=>$fileTotals,
-         ));
-
-         return $html;
+         return array("total"=>$fileTotals,"files"=>$fileList);
       }
 
       public function renderQueryData() 
@@ -132,17 +111,20 @@
             }
          }
 
-         $queryTotals['time'] = $this->getReadableTime($queryTotals['time']);
+         //$queryTotals['time'] = $this->getReadableTime($queryTotals['time']);
+         $queryTotals['time'] = $queryTotals['time'];
 
          //render
+         /*
          $template=new Frd_Template();
          $path=Frd::getFrdTemplatePath("profiler/query.phtml");
          $html=$template->render($path,array(
             'queries' => $queries,
             'query_totals' => $queryTotals,
          ));
+         */
 
-         return $html;
+         return array("total"=>$queryTotals,"queries"=>$queries);
       }
 
 
@@ -192,12 +174,16 @@
 
       function render()
       {
-         $html=$this->renderTime();
-         $html.=$this->renderMemory();
-         $html.=$this->renderQueryData();
-         $html.=$this->renderFileData();
+         $data=array();
 
-         return $html;
-         //Frd::getPage()->addBodyHtml($html);
+         $data['REQUEST_URI']=$_SERVER['REQUEST_URI'];
+         $data['time']=$this->renderTime();
+         $data['memory']=$this->renderMemory();
+         $data['query']=$this->renderQueryData();
+         $data['file']=$this->renderFileData();
+
+
+         //return print_r($data,true);
+         return json_encode($data);
       }
    }

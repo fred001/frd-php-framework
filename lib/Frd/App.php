@@ -9,6 +9,8 @@ class Frd_App
   protected $global=array();
 
   protected $dbs=array();
+  protected $default_db_name="default";
+
   protected $modules=array();
 
   //object
@@ -154,14 +156,23 @@ class Frd_App
       Zend_Db_Table::setDefaultAdapter($db);
     }
 
+    if(isset($config['profiler']) && $config['profiler'])
+    {
+       $db->getProfiler()->setEnabled(true);
+    }
+
     $this->dbs[$name]=$db;
 
     return $db;
   }
 
   //get db 
-  function getDb($name='default')
+  function getDb($name=false)
   {
+     if($name == false)
+     {
+        $name=$this->default_db_name;
+     }
     //
     if( !isset($this->dbs[$name]))
     {
@@ -169,6 +180,14 @@ class Frd_App
     }
 
     return $this->dbs[$name];
+  }
+
+  function setDefaultDb($name)
+  {
+     $this->default_db_name=$name;
+
+     $db=$this->getDb($name);
+     Zend_Db_Table::setDefaultAdapter($db);
   }
 
   //module methods

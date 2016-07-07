@@ -14,11 +14,9 @@ class Frd_Db_Table  extends Zend_Db_Table
   protected $primary='';
   protected $primary_value='';
 
-  protected $columns=array(); //tables
+  //protected $columns=array(); //tables
 
-  protected $created_at_field=null; //if set this field, will set this value aotomatic
 
-  public $_module=null;  //table's module
   function __construct($table,$primary='id',$columns=array())
   {
      parent::__construct();
@@ -27,7 +25,7 @@ class Frd_Db_Table  extends Zend_Db_Table
      $this->_primary=$primary; //this will change to array after load
      $this->primary=$primary;
 
-    $this->columns=$columns;
+    //$this->columns=$columns;
   }
 
 
@@ -56,23 +54,28 @@ class Frd_Db_Table  extends Zend_Db_Table
     return true;
   }
 
-  //load one record by where condition
-  function loadWhere($where)
+  protected function buildWhere($where)
   {
      $real_where=array();
-
      foreach($where as $k=>$v)
      {
         if(strpos($k,"?") !== false)
         {
-           $real_where[$k]=$v;
+           $realwhere[]=$this->_db->quoteInto($k,$v);
         }
         else
         {
-           $real_where[$k.'=?']=$v;
+           $realwhere[]=$this->_db->quoteInto($k."=?",$v);
         }
      }
 
+     return $real_where;
+  }
+
+  //load one record by where condition
+  function loadWhere($where)
+  {
+     $real_where=$this->buildWhere($where);
      $row=$this->fetchRow($real_where);
      if($row == false)
      {
@@ -168,75 +171,27 @@ class Frd_Db_Table  extends Zend_Db_Table
         $this->primary.' = ?'=>$this->primary_value,
       );
 
-      return $this->update($data,$where);
+      return parent::update($data,$where);
     }
     else
     {
       //insert
-      //if($this->created_at_field != false)
-       // $this->_data[$this->created_at_field]=date("Y-m-d H:i:s");
-
       $data=$this->getData();
       return $this->insert($data);
     }
   }
 
 
-  function setCreatedAt($field_name='created_at')
-  {
-    $this->created_at_field=$field_name;
-  }
-
-
-  /**
-  * get multi records ,and merge records 
-  * each records  should has a key, which is the last parameter of this mehtod
-  * it need at least 3 parameters, where1, where2, key_column_name
-  */
-  /*
-  function getMulti()
-  {
-     if(func_num_args() <= 2)
-     {
-        trigger_error("invalid parameter: getMulti ");
-     }
-
-     $args=func_get_args();
-
-     $key_column_name=array_pop($args);
-
-     //query records
-     $rows=array();
-     foreach($args as $where)
-     {
-        $rows=array_merge($rows,$this->getAssoc($where,$key_column_name));
-     }
-
-     return $rows;
-  }
-   */
 
 
   //add record, if exists, edit, 
   function insertWhere($where,$data)
   {
-     $real_where=array();
-
-     foreach($where as $k=>$v)
-     {
-        if(strpos($k,"?") !== false)
-        {
-           $real_where[$k]=$v;
-        }
-        else
-        {
-           $real_where[$k.'=?']=$v;
-        }
-     }
+     $real_where=$this->buildWhere($where);
 
      if($this->existsWhere($real_where))
      {
-        return $this->update($data,$real_where);
+        return parent::update($data,$real_where);
      }
      else
      {
@@ -249,41 +204,17 @@ class Frd_Db_Table  extends Zend_Db_Table
   {
      if($this->existsWhere($where))
      {
-        $real_where=array();
+        $real_where=$this->buildWhere($where);
 
-        foreach($where as $k=>$v)
-        {
-           if(strpos($k,"?") !== false)
-           {
-              $real_where[$k]=$v;
-           }
-           else
-           {
-              $real_where[$k.'=?']=$v;
-           }
-        }
 
-        return $this->update($data,$real_where);
+        return parent::update($data,$real_where);
      }
   }
 
   // delete records ,if not exists , do nothing
   function deleteWhere($where)
   {
-     $real_where=array();
-
-     foreach($where as $k=>$v)
-     {
-        if(strpos($k,"?") !== false)
-        {
-           $real_where[$k]=$v;
-        }
-        else
-        {
-           $real_where[$k.'=?']=$v;
-        }
-     }
-
+     $real_where=$this->buildWhere($where);
      return parent::delete($real_where);
   }
 
@@ -291,135 +222,12 @@ class Frd_Db_Table  extends Zend_Db_Table
   // check if record exists
   function existsWhere($where)
   {
-     $real_where=array();
-
-     foreach($where as $k=>$v)
-     {
-        if(strpos($k,"?") !== false)
-        {
-           $real_where[$k]=$v;
-        }
-        else
-        {
-           $real_where[$k.'=?']=$v;
-        }
-     }
-
+     $real_where=$this->buildWhere($where);
      $data=$this->fetchRow($real_where);
 
      return ($data != false);
   }
 
-
-  function delete($id)
-  {
-    $where=array(
-      $this->primary.'= ?' => $id
-    );
-    return parent::delete($where);
-  }
-
-  function compress($value,$type)
-  {
-     if($type == 'concat')
-     {
-        if(is_array($value))
-        {
-           $value=implode(",",$value);
-        }
-     }
-     else if($type == 'json')
-     {
-        if(is_array($value))
-        {
-           $value=json_encode($value);
-        }
-     }
-     else if($type == 'serialize')
-     {
-        if(!is_string($value) && !is_numeric($value))
-        {
-           $value=serialize($value);
-        }
-     }
-     else
-     {
-        //error
-     }
-
-     return $value;
-  }
-
-  function uncompress($value,$type)
-  {
-     if($type == 'concat')
-     {
-        $value=explode(",",$value);
-     }
-     else if($type == 'json')
-     {
-        $value=json_decode($value,true);
-     }
-     else if($type == 'serialize')
-     {
-        $value=unserialize($value);
-     }
-     else
-     {
-        //error
-     }
-
-     return $value;
-  }
-
-
-  //NOT USED
-  //@param $mode  : insert or update
-  //valid columns
-  protected function handleData($mode,$data)
-  {
-    //1, check column required
-    foreach($this->columns as $name=>$column)
-    {
-      if($column['required'] == true)
-      {
-        if(!isset($data[$name]))
-        {
-          throw new Exception(sprintf("miss %s when insert into %s ",$name,$this->_name));
-        }
-      }
-    }
-    //2 , auto fill
-    foreach($this->columns as $name=>$column)
-    {
-      //only if the valud not set, then do auto fill
-      if(!isset($data[$name]))
-      {
-        if(isset($column['auto_fill']) && is_array($column['auto_fill']) && is_array($column['auto_fill'][$mode]))
-        {
-          $auto_fill_config=$column['auto_fill'][$mode];
-          list($type,$value)=$auto_fill_config;
-
-          if($type == "mysql" )
-          {
-            $data[$name]=new Zend_Db_Expr($value);
-          }
-          else if($type == "string" )
-          {
-            $data[$name]=$value;
-          }
-          else if($type == "php_function" )
-          {
-            //$data[$name]=$value;
-          }
-        }
-      }
-    }
-    
-    //dump($data);exit();
-
-    return $data;
-  }
 
 
   //old methods
@@ -739,212 +547,26 @@ class Frd_Db_Table  extends Zend_Db_Table
 
      return $rows;
   }
-  function getCol($where,$column)
+
+  function update($where,$data)
   {
-     if($where == false)
-     {
-        $where=array(); 
-     }
-
-     $select=$this->_db->select();
-     $select->from($this->_name,$column);
-     foreach($where as $k=>$v)
-     {
-        if(strpos($k,"?") !== false)
-        {
-           $select->where($k,$v);
-        }
-        else
-        {
-           $select->where($k.'=?',$v);
-        }
-     }
-
-     //$select->limit(1);
-
-     //echo $select;
-     //exit();
-
-     try{
-        $value=$this->_db->fetchCol($select);
-
-        /*
-        //check compress
-        if($value != false)
-        {
-           //check compress
-           if( $this->columns != false)
-           {
-              foreach($this->columns as $name=>$v)
-              {
-                 if(isset($v['compress']) && $name == $column )
-                 {
-                    $value=$this->uncompress($value,$v['compress']);
-                 }
-              }
-           }
-        }
-        */
-
-     }catch(Exception $e)
-     {
-        $msg=$e->getMessage().': '.$select->__toString();
-        trigger_error($msg);
-     }
-
-     return $value;
+     return $this->updateWhere($where,$data);
   }
 
-
-  /**
-  * get multi records ,and merge records 
-  * each records  should has a key, which is the last parameter of this mehtod
-  * it need at least 3 parameters, where1, where2, key_column_name
-  */
-  function getMulti()
+  function delete($id)
   {
-     if(func_num_args() <= 2)
+     if(is_array($id))
      {
-        trigger_error("invalid parameter: getMulti ");
-     }
-
-     $args=func_get_args();
-
-     $key_column_name=array_pop($args);
-
-     //query records
-     $rows=array();
-     foreach($args as $where)
-     {
-        $rows=array_merge($rows,$this->getAssoc($where,$key_column_name));
-     }
-
-     return $rows;
-  }
-  
-  //old method ,do not need
-  function setModifiedAt($field_name='modified_at')
-  {
-    return false;
-  }
-
-  function fetchAllWhere($where=array(),$order=false)
-  {
-     if($where == false)
-     {
-        $where=array(); 
-     }
-
-     $select=$this->_db->select();
-     $select->from($this->_name,'*');
-
-     if(is_string($where))
-     {
-        $select->where($where);
+        $where=$id;
+        $this->deleteWhere($where);
      }
      else
      {
-        foreach($where as $k=>$v)
-        {
-           if(strpos($k,"?") !== false)
-           {
-              $select->where($k,$v);
-           }
-           else
-           {
-              $select->where($k.'=?',$v);
-           }
-        }
+        $where=array(
+           $this->primary.'= ?' => $id
+        );
      }
-
-     if($order != false)
-     {
-        $select->order($order);
-     }
-
-     try{
-        $rows=$this->_db->fetchAll($select);
-
-        if($rows != false)
-        {
-           //check compress
-           if( $this->columns != false)
-           {
-              foreach($rows as $k=>$row)
-              {
-                 foreach($this->columns as $name=>$v)
-                 {
-                    if(isset($v['compress']) && isset($row[$name]))
-                    {
-                       $rows[$k][$name]=$this->uncompress($row[$name],$v['compress']);
-                    }
-                 }
-              }
-           }
-        }
-
-     }catch(Exception $e)
-     {
-        $msg=$e->getMessage().': '.$select->__toString();
-        trigger_error($msg);
-     }
-
-
-     return $rows;
+     return parent::delete($where);
   }
-
-  function fetchRowWhere($where=array())
-  {
-     if($where == false)
-     {
-        return array();
-     }
-
-     $select=$this->_db->select();
-     $select->from($this->_name,'*');
-
-     foreach($where as $k=>$v)
-     {
-        if(strpos($k,"?") !== false)
-        {
-           $select->where($k,$v);
-        }
-        else
-        {
-           $select->where($k.'=?',$v);
-        }
-     }
-
-     $select->limit(1);
-
-     //echo $select;
-     try{
-        $row=$this->_db->fetchRow($select);
-
-        if($row != false)
-        {
-           //check compress
-           if( $this->columns != false)
-           {
-              foreach($this->columns as $name=>$v)
-              {
-                 if(isset($v['compress']))
-                 {
-                    $row[$name]=$this->uncompress($row[$name],$v['compress']);
-                 }
-              }
-           }
-        }
-
-     }catch(Exception $e)
-     {
-        $msg=$e->getMessage().': '.$select->__toString();
-        trigger_error($msg);
-     }
-
-     return $row;
-  }
-
-
 
 }
