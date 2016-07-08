@@ -61,11 +61,11 @@ class Frd_Db_Table  extends Zend_Db_Table
      {
         if(strpos($k,"?") !== false)
         {
-           $realwhere[]=$this->_db->quoteInto($k,$v);
+           $real_where[]=$this->_db->quoteInto($k,$v);
         }
         else
         {
-           $realwhere[]=$this->_db->quoteInto($k."=?",$v);
+           $real_where[]=$this->_db->quoteInto($k."=?",$v);
         }
      }
 
@@ -188,6 +188,10 @@ class Frd_Db_Table  extends Zend_Db_Table
   function insertWhere($where,$data)
   {
      $real_where=$this->buildWhere($where);
+     if($real_where == false)
+     {
+        throw Exception("insertWhere Exception: realwhere empty");
+     }
 
      if($this->existsWhere($real_where))
      {
@@ -206,6 +210,11 @@ class Frd_Db_Table  extends Zend_Db_Table
      {
         $real_where=$this->buildWhere($where);
 
+
+        if($real_where == false)
+        {
+           throw Exception("updateWhere Exception: realwhere empty");
+        }
 
         return parent::update($data,$real_where);
      }
