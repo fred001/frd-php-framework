@@ -204,6 +204,11 @@ class Frd_App
          return $this->module;
       }
 
+      if($name == false)
+      {
+         $name=trim($this->module_name,"/");
+      }
+
 
       $name=trim($this->module_name,"/");
 
