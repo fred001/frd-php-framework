@@ -11,7 +11,8 @@ class Frd_App
   protected $dbs=array();
   protected $default_db_name="default";
 
-  protected $modules=array();
+  protected $module=null;
+  protected $module_name="index";
 
   //object
   protected $route=null;
@@ -51,9 +52,9 @@ class Frd_App
     $this->baseurl=$setting['baseurl'];
 
     //optional
-    if(isset($setting['module.default']))
+    if(isset($setting['module.name']))
     {
-      $this->module_default=$setting['module.default'];
+       $this->module_name=trim($setting['module.name'],"/");
     }
 
     if(isset($setting['module.controller.default']))
@@ -64,7 +65,8 @@ class Frd_App
     $this->setting=$setting;
 
     $this->route=new Frd_Route();
-    //$this->request=new Frd_Object();
+    $controller_dir=$module_dir."/".$this->module_name."/controller";
+    $this->route->setControllerDir($controller_dir);
   }
 
   /*
@@ -195,29 +197,26 @@ class Frd_App
    * example:
    *   getModule('test','Test','param1','param2','param3'....)
    */
-  public function getModule($name)
-  {
-    $name=trim($name,"/");
+   public function getModule()
+   {
+      if($this->module)
+      {
+         return $this->module;
+      }
 
-    //if has load, return loaded module
-    if( isset($this->modules[$name]) )
-    {
-      return $this->modules[$name];
-    }
-    else
-    {
+
+      $name=trim($this->module_name,"/");
+
+      //if has load, return loaded module
       //load new
-      $module_loaded=false;
-
       $file_path=$this->module_dir."/".$name."/main.php";
 
       if(file_exists($file_path) == false)
       {
-        throw new Exception("LOAD MODULE FAILED:".$name);
+         throw new Exception("LOAD MODULE FAILED:".$name);
       }
 
       require_once($file_path);
-      $module_loaded=true;
 
       //init module
 
@@ -230,18 +229,17 @@ class Frd_App
 
       $reflection = new ReflectionClass($class_name); 
       $module = $reflection->newInstanceArgs(array(
-        dirname($file_path),
+         dirname($file_path),
       )); 
 
       if(count($params) > 0)
       {
-        call_user_func_array(array($module,"init"),$params);
+         call_user_func_array(array($module,"init"),$params);
       }
 
-      $this->modules[$name]=$module;
+      $this->module=$module;
 
       return $module;
-    }
   }
 
 
@@ -463,6 +461,7 @@ class Frd_App
       }
     }
 
+    /*
     if(strpos($url_path,$this->baseurl) !== 0)
     {
       throw new Exception("BASEURL NOT MATCH PATH:".$this->baseurl.",".$url_path);
@@ -470,6 +469,7 @@ class Frd_App
 
     //drop baseurl part
     $url_path=substr($url_path,strlen($this->baseurl));
+    */
 
     //remove query part
     if($url_path != false)
@@ -500,19 +500,26 @@ class Frd_App
 
     if($path == false)
     {
-      $path=$default_module.'/'.$default_controller;
+      //$path=$default_module.'/'.$default_controller;
+      $path='/'.$default_controller;
     }
 
     $paths=array(
       $path,
-      $default_module."/".trim($path,"/"),
-      $path."/".trim($default_controller,"/"),
+      //$default_module."/".trim($path,"/"),
+      //$path."/".trim($default_controller,"/"),
     );
+
+    //var_dump($paths);exit();
 
     //var_dump($paths);exit();
     foreach($paths as $path)
     {
-      $params=$this->route->rewrite($path);
+       //var_dump($path);
+       //exit();
+       $params=$this->route->rewrite($path);
+       //var_dump($params);
+       //exit();
       if($params != false)
       {
         break;
@@ -528,32 +535,17 @@ class Frd_App
 
     //var_dump($params);exit();
 
-    unset($params['path']);
-    $module=$params['module'];
-    unset($params['module']);
+    //unset($params['path']);
+    //$module=$params['module'];
+    //unset($params['module']);
     $controller=$params['controller'];
     unset($params['controller']);
-
-    $_GET=array_merge($params['query'],$_GET); 
-    unset($params['query']);
 
     $_GET=array_merge($params,$_GET); 
 
     //$this->request->setData($_GET);
 
-
-    //
-    /*
-    if($this->plugins["before_run_controller"] != false)
-    {
-      $function=$this->plugins['before_run_controller'];
-
-      $function($module,$controller);
-    }
-    */
-
-    //
-    $module=$this->getModule($module);
+    $module=$this->getModule();
     $module->runController($controller);
   }
 
