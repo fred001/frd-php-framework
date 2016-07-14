@@ -197,7 +197,7 @@ class Frd_App
    * example:
    *   getModule('test','Test','param1','param2','param3'....)
    */
-   public function getModule()
+   public function getModule($name=false)
    {
       if($this->module)
       {
