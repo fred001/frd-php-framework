@@ -40,7 +40,6 @@ class Frd_Module
   }
    */
 
-   /*
   function getTemplatePath($template_path)
   {
     $file=$this->module_dir."/templates/$template_path".".phtml";
@@ -48,6 +47,7 @@ class Frd_Module
     return $file;
   }
 
+   /*
   function getTemplateFolder()
   {
     $file=$this->module_dir."/templates";

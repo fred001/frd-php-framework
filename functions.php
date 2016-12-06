@@ -4,7 +4,7 @@
       return Frd::$app;
    }
 
-   function getModule($name)
+   function getModule($name="default")
    {
       return app()->getModule($name);
    }

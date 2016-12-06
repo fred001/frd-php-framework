@@ -1,6 +1,6 @@
 <?php
-$layout=$_module->getLayout("basic");
-$layout->content=$_module->render("index",array(
+$layout=getModule()->getLayout("basic");
+$layout->content=getModule()->render("index",array(
 ));
 
 echo $layout->render();

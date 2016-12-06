@@ -52,9 +52,9 @@ class Frd_App
     $this->baseurl=$setting['baseurl'];
 
     //optional
-    if(isset($setting['module.name']))
+    if(isset($setting['module.default']))
     {
-       $this->module_name=trim($setting['module.name'],"/");
+       $this->module_name=trim($setting['module.default'],"/");
     }
 
     if(isset($setting['module.controller.default']))
