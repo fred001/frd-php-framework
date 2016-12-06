@@ -36,6 +36,8 @@
       'layout.js'=>array(
          "/resource/js/jquery.js",
          "/resource/js/bootstrap.js",
+         "/resource/js/jquery.form.js",
       ),
 
+      'website.title'=>"Frd PHP Framework",
    );

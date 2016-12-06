@@ -1,0 +1,88 @@
+<h1>
+   Install
+</h1>
+
+<ol>
+   <li>
+   Config File  <?php echo ROOT_PATH."default_setting.php"; ?>
+   </li>
+   <li>
+   <?php
+      if(file_exists(ROOT_PATH."/.git"))
+      {
+            echo "Please DELETE Folder <strong>".ROOT_PATH.".git</strong>";
+      }
+   ?>
+
+   </li>
+   <li>
+      Delete 
+      <strong><?php echo ROOT_PATH."modules/default/controllers/install.php"; ?> </strong>
+   </li>
+   <li>
+      Delete 
+      <strong><?php echo ROOT_PATH."modules/default/templates/install.phtml"; ?> </strong>
+   </li>
+
+</ol>
+
+
+<!--
+
+数据库
+<form action="/install" method="post">
+   <table>
+      <tr>
+         <td>Adapter </td>
+         <td>
+            <input type="text" placeholder="Adapter" name="adapter">
+         </td>
+      </tr>
+      <tr>
+         <td>Host</td> 
+         <td>
+            <input type="text" placeholder="Host" name="host">
+         </td>
+      </tr>
+      <tr>
+         <td>DB Name</td> 
+         <td>
+            <input type="text" placeholder="DB Name" name="dbname" >
+         </td>
+      </tr>
+      <tr>
+         <td>Username</td>  
+         <td>
+            <input type="text" placeholder="Username" name="username">
+         </td>
+      </tr>
+      <tr>
+         <td>Password</td>  
+         <td>
+            <input type="text" placeholder="Password" name="password">
+         </td>
+      </tr>
+      <tr>
+         <td></td>  
+         <td>
+            <input type="submit" value="Save">
+         </td>
+      </tr>
+   </table>
+</form>
+-->
+
+
+<script>
+
+   /*
+   $(document).ready(function(){
+         $("form").ajaxForm(function(r){
+               alert(r);
+
+         });
+
+   });
+   */
+
+</script>

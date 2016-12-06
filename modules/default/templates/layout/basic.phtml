@@ -4,10 +4,26 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IAMLOSING.ME</title>
+    <title><?php echo app()->getSetting("website.title"); ?></title>
 
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <?php
+       $css=app()->getSetting("layout.css");
+       foreach($css as $css_href)
+       {
+          echo '<link href="'.$css_href.'" rel="stylesheet">';
+       }
+    ?>
+
+    <?php
+       $js=app()->getSetting("layout.js");
+       foreach($js as $js_src)
+       {
+          echo '<script src="'.$js_src.'"></script>';
+       }
+    ?>
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
