@@ -1,17 +1,34 @@
 <?php
    class Frd_Route
    {
+
+      /*
+      format:
+
+      array(
+         array(
+            'pattern'=>$pattern,
+            'params_rewrite'=>$params_rewrite,
+         )
+         array(
+            'pattern'=>$pattern,
+            'params_rewrite'=>$params_rewrite,
+         )
+      )
+      */
       protected $rules=array();
       protected $controller_dir=".";
 
       function __construct()
       {
+         /*
          $this->addRule("/",array("controller"=>"index"));
          $this->addRule("/:controller");
          $this->addRule("/:controller-1/:controller-2");
          $this->addRule("/:controller-1/:controller-2/:controller-3");
          $this->addRule("/:controller-1/:controller-2/:controller-3/:controller-4");
          $this->addRule("/:controller-1/:controller-2/:controller-3/:controller-4/:controller-5");
+         */
       }
 
 
@@ -22,10 +39,8 @@
 
       function addRule($pattern,$params_rewrite=array())
       {
-         $pattern=rtrim($pattern,"/");
-
+         //$pattern=rtrim($pattern,"/");
          //$pattern='/'.str_replace("/","\/",$pattern).'/';
-
 
          $this->rules[]=array(
             'pattern'=>$pattern,
@@ -34,6 +49,84 @@
       }
 
       function rewrite($path)
+      {
+         $rules=array_reverse($this->rules);
+
+
+         foreach($rules as $rule)
+         {
+            $params=array();
+            $query=array();
+
+
+            $pattern=$rule['pattern'];
+            $params_rewrite=$rule['params_rewrite'];
+            $match=array();
+
+            if(($ret=preg_match($pattern,$path,$match)) == false)
+            {
+               //echo 'aa';
+               continue;
+            }
+
+            //var_dump($ret);
+            //var_dump($pattern);
+            //var_dump($path);
+            //var_dump($match);
+            //exit();
+
+            $params=array();
+            foreach($params_rewrite as $k=>$v)
+            {
+               $count=count($match);
+
+               //replace :0,:1,... in value
+               for($i=0;$i<$count; $i++)
+               {
+                  $v=str_replace(":$i",$match[$i],$v);
+               }
+
+               $params[$k]=$v;
+            }
+
+
+            /*
+            if(!isset($params['controller']))
+            {
+               $controller="";
+               $controller_prefix="controller-";
+               foreach($params as $k=>$v)
+               {
+                  if(substr($k,0,strlen($controller_prefix)) === $controller_prefix)
+                  {
+                     $controller.=$v."/";
+                     unset($params[$k]);
+                  }
+               }
+
+               $params['controller']=trim($controller,"/");
+            }
+            */
+
+            //var_dump($params);exit();
+            //check controller path
+            $controller_path=$this->controller_dir."/".$params['controller'].".php";
+            //var_dump($controller_path);
+            //exit();
+            if(file_exists($controller_path) == false)
+            {
+               continue;
+            }
+
+
+            return $params;
+         }
+
+
+         return false;
+      }
+
+      function rewrite_old($path)
       {
          $rules=array_reverse($this->rules);
 

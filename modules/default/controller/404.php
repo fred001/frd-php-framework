@@ -1,7 +1,7 @@
 <?php
-$layout=$_module->getLayout("basic");
+   $module=getModule();
+   $layout=$module->getLayout("basic");
 
+   $layout->content=$module->render("404");
 
-$layout->content=$_module->render("404");
-
-echo $layout->render();
+   echo $layout->render();

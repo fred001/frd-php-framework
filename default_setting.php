@@ -11,9 +11,20 @@
       //this is for  use method add rule more eash
       //app()->getRoute()->add(....) will add to end
       'routes'=>array(
-         "/(.*)/"=>array(
-            'path'=>":0",
+         "/\/(.*)/"=>array(
+            'controller'=>":1",
          ),
+         "/\/book\/(.*)/"=>array(
+            'controller'=>"book",
+            'path'=>":1",
+         ),
+
+         /*
+         "/\/([^\/]*)\/(.*)/"=>array(
+            'module'=>":1",
+            'controller'=>":2",
+         ),
+         */
       ),
 
       //Zend Db Adapter Params
