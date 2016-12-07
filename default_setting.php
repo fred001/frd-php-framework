@@ -33,9 +33,9 @@
             'disable'=>1, //optional, if not exists,is enable
             'adapter' => 'pdo_mysql',
             'host' => "localhost",
-            'dbname' => "",
-            'username' => "",
-            'password' => "",
+            'dbname' => "test",
+            'username' => "root",
+            'password' => "1223",
          )
       ),
 

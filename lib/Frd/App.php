@@ -148,9 +148,18 @@ class Frd_App
     $adapter=$config['adapter'];
     unset($config['adapter']);
 
-    $db=Zend_Db::factory($adapter,$config);
-    $db->setFetchMode(Zend_Db::FETCH_ASSOC);
-    $db->query('set names utf8');
+    try
+    {
+       $db=Zend_Db::factory($adapter,$config);
+
+       $db->setFetchMode(Zend_Db::FETCH_ASSOC);
+       $db->query('set names utf8');
+    }
+    catch(Exception $e)
+    {
+       echo $e->getMessage();
+       exit();
+    }
 
     //set as default
     if( $name == 'default')
