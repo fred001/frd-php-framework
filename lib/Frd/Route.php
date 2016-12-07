@@ -108,6 +108,10 @@
             }
             */
 
+            if(!isset($params['controller']))
+            {
+               continue;
+            }
             //var_dump($params);exit();
             //check controller path
             $controller_path=$this->controller_dir."/".$params['controller'].".php";
