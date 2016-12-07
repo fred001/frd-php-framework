@@ -11,12 +11,12 @@
       //this is for  use method add rule more eash
       //app()->getRoute()->add(....) will add to end
       'routes'=>array(
+         "/\//"=>array(
+            'controller'=>"index",
+         ),
+
          "/\/(.*)/"=>array(
             'controller'=>":1",
-         ),
-         "/\/book\/(.*)/"=>array(
-            'controller'=>"book",
-            'path'=>":1",
          ),
 
          /*
