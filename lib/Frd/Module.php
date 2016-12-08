@@ -159,6 +159,21 @@ class Frd_Module
   }
 
 
+  function getTable($name)
+  {
+     $file=$this->module_dir."/Table/".ucfirst($name).".php";
+
+     if( file_exists($file) == false)
+     {
+        return new Frd_Db_Table($name);
+     }
+     else
+     {
+        return $this->getClass($name,"Table");
+     }
+  }
+
+
   function getLayout($path,$params=array())
   {
     $class= $this->getClass($path,"Layout",$params);
