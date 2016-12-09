@@ -28,6 +28,11 @@ class Frd_Db_Table  extends Zend_Db_Table
     //$this->columns=$columns;
   }
 
+  function getName()
+  {
+     return $this->_name;
+  }
+
 
   /*********object functions********/
   /**
