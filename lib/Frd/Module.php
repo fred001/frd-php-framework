@@ -236,7 +236,8 @@ class Frd_Module
       throw new Exception("CONTROLLER NOT EXISTS:".$path);
     }
 
-    require_once($path);
+    //require_once($path);
+    require($path);
   }
 
   function render($path,$vars=array())
