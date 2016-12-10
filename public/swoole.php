@@ -41,6 +41,28 @@
    $serv = new swoole_http_server("127.0.0.1", 9502);
 
    $serv->on('Request', function($request, $response) {
+      foreach($request->get as $k=>$v)
+      {
+         $_GET[$k]=$v;
+      }
+
+      foreach($request->post as $k=>$v)
+      {
+         $_POST[$k]=$v;
+      }
+
+      $_REQUEST=array_merge($_GET,$_POST);
+
+      foreach($request->server as $k=>$v)
+      {
+         $_SERVER[strtoupper($k)]=$v;
+      }
+
+      foreach($request->cookie as $k=>$v)
+      {
+         $_COOKIE[$k]=$v;
+      }
+
       //var_dump($request->get);
       //var_dump($request->post);
       //var_dump($request->cookie);
@@ -52,17 +74,8 @@
       //$response->header("X-Server", "Swoole");
       //$response->end("<h1>Hello Swoole!</h1>");
 
-      foreach($request->get as $k=>$v)
-      {
-         $_GET[$k]=$v;
-      }
-
-
-      foreach($request->server as $k=>$v)
-      {
-         $_SERVER[strtoupper($k)]=$v;
-      }
-
+      $request=new Frd_Request_Swoole($request);
+      app()->setRequest($request);
 
       ob_start();
       try{
@@ -87,7 +100,9 @@
 
       $content=ob_get_clean();
 
-      var_dump($content);
+      //var_dump('ccc');
+      //$response->end('cc');
+      //var_dump($content);
       $response->end($content);
 
    });
