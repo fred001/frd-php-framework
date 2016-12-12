@@ -227,8 +227,8 @@ class Frd_Module
     //$_module=$this;
     //$_controller=$controller;
 
-    app()->setGlobal("_module",$this);
-    app()->setGlobal("_controller",$controller);
+    Frd::$app->setGlobal("_module",$this);
+    Frd::$app->setGlobal("_controller",$controller);
 
     $path=$this->getPath("controller/$controller.php");
     if(file_exists($path) == false)

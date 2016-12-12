@@ -6,7 +6,7 @@
          $this->tablename=$table->getName();
          $this->table=$table;
 
-         $this->db=app()->getDb();
+         $this->db=Frd::$app->getDb();
       }
 
       function insert($params)

@@ -553,7 +553,7 @@
          $controllers=array();
 
          //
-         $app=app();
+         $app=Frd::$app;
 
          $success=false;
          while(count($parts) > 0)
