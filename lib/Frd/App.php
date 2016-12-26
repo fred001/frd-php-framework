@@ -562,7 +562,7 @@ class Frd_App
 
     if($params == false)
     {
-      throw new Exception("REWRITE URL FAILED");
+       throw new Exception("REWRITE_FAILED");
       //throw new Exception("REWRITE URL FAILED".json_encode($paths));
     }
 

@@ -119,7 +119,8 @@
             //exit();
             if(file_exists($controller_path) == false)
             {
-               continue;
+               throw new Exception("CONTROLLER_NOT_EXISTS:$controller_path");
+               //continue;
             }
 
 

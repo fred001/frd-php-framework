@@ -11,7 +11,7 @@
       //this is for  use method add rule more eash
       //app()->getRoute()->add(....) will add to end
       'routes'=>array(
-         "/\//"=>array(
+         "/^\/$/"=>array(
             'controller'=>"index",
          ),
 
