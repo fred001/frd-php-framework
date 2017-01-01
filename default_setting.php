@@ -35,7 +35,7 @@
             'host' => "localhost",
             'dbname' => "test",
             'username' => "root",
-            'password' => "1223",
+            'password' => "",
          )
       ),
 

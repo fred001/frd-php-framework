@@ -108,12 +108,13 @@
             }
             */
 
-            if(!isset($params['controller']))
+            if(!isset($params['controller']) || $params['controller'] == false)
             {
                continue;
             }
             //var_dump($params);exit();
             //check controller path
+
             $controller_path=$this->controller_dir."/".$params['controller'].".php";
             //var_dump($controller_path);
             //exit();
