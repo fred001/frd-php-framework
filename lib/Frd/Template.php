@@ -350,9 +350,11 @@ class Frd_Template
           }
           else
           {
+             //do not replace {VAR} to "" when can not parse
+             //other place will need parse this string, like vue
             $search="{".$match."}";
             $replace='';
-            $content=str_replace($search,$replace,$content);
+            //$content=str_replace($search,$replace,$content);
           }
         }
         else
