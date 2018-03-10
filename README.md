@@ -10,16 +10,19 @@
 1. easy for extend (not ready)
 1. based on Zend Framework V1.10, can use Zend Class directly
 
+## TODO
+
+## Authors
+iamlosing02@gmail.com  
+
+## Requirement
+  yum install php-ZendFramework
+
+## Install
 
 ### DOCUMENT
-    http://doc.frd.life/book/frd-php-framework/index
 
-#### Next Target
-
-    No Target
-    waiting for new ideas
-
-### HISTORY
+## ChangeLog
     2015-12-07  重新建立版本 
     2016-04-27  version v0.0.9
     2016-07-13  version v0.1

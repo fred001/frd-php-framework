@@ -5,8 +5,6 @@
       {
          $this->tablename=$table->getName();
          $this->table=$table;
-
-         $this->db=Frd::$app->getDb();
       }
 
       function insert($params)
@@ -151,68 +149,6 @@
          }
 
          return successResponse(array( 'data'=>$rows));
-      }
-
-      function find_all($params=array())
-      {
-         $select=$this->search_build_select($params);
-         $rows=$this->db->fetchAll($select);
-         if($rows)
-         {
-            $rows=$this->search_handle_rows($rows);
-         }
-
-         return successResponse(array( 'data'=>$rows));
-      }
-
-      function find_one($params=array())
-      {
-         $select=$this->search_build_select($params);
-         $rows=$this->db->fetchRow($select);
-         if($rows)
-         {
-            $rows=$this->search_handle_rows($rows);
-         }
-
-         return successResponse(array( 'data'=>$rows));
-      }
-
-      function find($params=array())
-      {
-         $select=$this->search_build_select($params);
-
-         #
-         $page=value_get($params,'page',1);
-         $page_count=value_get($params,'page_count',10);
-
-         $select->limitPage($page,$page_count);
-
-         $rows=$this->db->fetchAll($select);
-         if($rows)
-         {
-            $rows=$this->search_handle_rows($rows);
-         }
-
-         #total
-         $select->reset("columns");
-         $select->columns("count(*)");
-         $select->reset('order');
-         $select->reset('limitcount');
-         $select->reset('limitoffset');
-
-         $total=$this->db->fetchOne($select);
-         $total=intval($total);
-
-         $pagination=array(
-            'total'=>$total,
-            'pagecount'=>$page_count,
-            'page'=>$page,
-         );
-
-         return successResponse(array(
-            'data'=>$rows,
-            'pagination'=>$pagination,
-         ));
       }
 
       function search_one($params)

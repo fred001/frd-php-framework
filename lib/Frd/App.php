@@ -16,7 +16,7 @@ class Frd_App
 
   //object
   protected $route=null;
-  protected $request=null;
+  //protected $request=null;
 
   //protected $session=null;
   //protected $session_user=null; //session for user
@@ -136,25 +136,6 @@ class Frd_App
   {
     $this->global[$key]=$value;
   }
-
-  public function setRequest($request)
-  {
-     $this->request=$request;
-  }
-
-  public function getRequest()
-  {
-     if($this->request === null)
-     {
-        $this->request=new Frd_Request();
-        return $this->request;
-     }
-     else
-     {
-        return $this->request;
-     }
-  }
-
   //------------------ db methods -------------------//
   public function addDb($name,$config)
   {
@@ -480,19 +461,18 @@ class Frd_App
   {
     if($url_path == false)
     {
-       $path_info=$this->getRequest()->getServer("PATH_INFO");
-       if(!empty($path_info))
-       {
-          $url_path=$path_info;
-       }
-       else if($this->getRequest()->getServer('REQUEST_URI') != false)
-       {
-          $url_path=$this->getRequest()->getServer('REQUEST_URI');
-       }
-       else
-       {
-          $url_path="/";
-       }
+      if(!empty($_SERVER['PATH_INFO']))
+      {
+        $url_path=$_SERVER['PATH_INFO'];
+      }
+      else if(!empty($_SERVER['REQUEST_URI']))
+      {
+        $url_path=$_SERVER['REQUEST_URI'];
+      }
+      else
+      {
+        $url_path="/";
+      }
     }
 
     /*
@@ -562,7 +542,7 @@ class Frd_App
 
     if($params == false)
     {
-       throw new Exception("REWRITE_FAILED");
+      throw new Exception("REWRITE URL FAILED");
       //throw new Exception("REWRITE URL FAILED".json_encode($paths));
     }
 

@@ -159,21 +159,6 @@ class Frd_Module
   }
 
 
-  function getTable($name)
-  {
-     $file=$this->module_dir."/Table/".ucfirst($name).".php";
-
-     if( file_exists($file) == false)
-     {
-        return new Frd_Db_Table($name);
-     }
-     else
-     {
-        return $this->getClass($name,"Table");
-     }
-  }
-
-
   function getLayout($path,$params=array())
   {
     $class= $this->getClass($path,"Layout",$params);
@@ -227,8 +212,8 @@ class Frd_Module
     //$_module=$this;
     //$_controller=$controller;
 
-    Frd::$app->setGlobal("_module",$this);
-    Frd::$app->setGlobal("_controller",$controller);
+    app()->setGlobal("_module",$this);
+    app()->setGlobal("_controller",$controller);
 
     $path=$this->getPath("controller/$controller.php");
     if(file_exists($path) == false)
@@ -236,8 +221,7 @@ class Frd_Module
       throw new Exception("CONTROLLER NOT EXISTS:".$path);
     }
 
-    //require_once($path);
-    require($path);
+    require_once($path);
   }
 
   function render($path,$vars=array())

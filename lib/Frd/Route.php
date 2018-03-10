@@ -108,20 +108,18 @@
             }
             */
 
-            if(!isset($params['controller']) || $params['controller'] == false)
+            if(!isset($params['controller']))
             {
                continue;
             }
             //var_dump($params);exit();
             //check controller path
-
             $controller_path=$this->controller_dir."/".$params['controller'].".php";
             //var_dump($controller_path);
             //exit();
             if(file_exists($controller_path) == false)
             {
-               throw new Exception("CONTROLLER_NOT_EXISTS:$controller_path");
-               //continue;
+               continue;
             }
 
 
@@ -555,7 +553,7 @@
          $controllers=array();
 
          //
-         $app=Frd::$app;
+         $app=app();
 
          $success=false;
          while(count($parts) > 0)
